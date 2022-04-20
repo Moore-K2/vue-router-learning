@@ -1,5 +1,14 @@
 <template>
   <div>
+    <div class="input">
+      <input
+        type="text"
+        v-model="title"
+        @keyup.enter="add"
+        placeholder="请添加社会语录..."
+      />&nbsp;
+      <button @click="add">添加社会语录</button>
+    </div>
     <ul>
       <li v-for="m in messageArr" :key="m.id">
         <!-- 字符串写法 加：表示将引号里面的解析为Js,再加模板字符串，目的是混着js变量 -->
@@ -13,6 +22,7 @@
             query: {
               id: m.id,
               title: m.title,
+              content: m.content,
             },
           }"
           >{{ m.title }}</router-link
@@ -27,17 +37,73 @@
 </template>
 
 <script>
+import axios from "axios";
+import { nanoid } from "nanoid";
 export default {
   name: "Message",
+
   data() {
     return {
-      messageArr: [
-        { id: "1", title: "message1" },
-        { id: "2", title: "message2" },
-        { id: "3", title: "message3" },
-        { id: "4", title: "message4" },
-      ],
+      title: "",
+      messageArr: JSON.parse(localStorage.getItem("messageArr")) || [],
+      //#region
+      // messageArr: [
+      //   { id: "1", title: "花香", content: "花以香为证，人以富为首" },
+      //   {
+      //     id: "2",
+      //     title: "繁华",
+      //     content: "愿此去繁花似锦，再相逢依然如故。",
+      //   },
+      //   {
+      //     id: "3",
+      //     title: "王八",
+      //     content:
+      //       "王八摸头必有所求，大哥摸头必有所愁，大哥你潇洒人世走，王八它快乐水中游。",
+      //   },
+      //   {
+      //     id: "4",
+      //     title: "微笑",
+      //     content: "对你微笑，纯属礼貌，给脸不要，我看你无可救药。",
+      //   },
+      // ],
+      //#endregion
     };
+  },
+  methods: {
+    add() {
+      // const obj = { id: nanoid(), title: this.title, content: "" };
+      // this.messageArr.unshift(obj);
+      // this.title = "";
+      if (this.title.trim()) {
+        axios.get("https://api.uixsj.cn/hitokoto/get?type=social").then(
+          (response) => {
+            console.log(response.data);
+            const obj = {
+              id: nanoid(),
+              title: this.title,
+              content: response.data,
+            };
+            this.messageArr.unshift(obj);
+            this.title = "";
+          },
+          (error) => {
+            alert(error.message);
+          }
+        );
+      } else {
+        alert("输入的标题不能为空！");
+      }
+    },
+  },
+  watch: {
+    messageArr: {
+      deep: true,
+      handler(value) {
+        // value其实是messageArr数组的所有对象
+        console.log(value);
+        localStorage.setItem("messageArr", JSON.stringify(value));
+      },
+    },
   },
 };
 </script>
@@ -45,5 +111,8 @@ export default {
 <style>
 hr {
   color: red;
+}
+.input {
+  margin: 10px;
 }
 </style>
