@@ -94,7 +94,7 @@ export default {
       //   this.messageArr.forEach((m) => {
       //     if (m.title === this.title) return alert("输入不能重复");
       //   })
-
+      console.log(this.messageArr[0].content);
       axios.get("https://api.uixsj.cn/hitokoto/get?type=social").then(
         (response) => {
           console.log(response.data);
