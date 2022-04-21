@@ -5,8 +5,10 @@
         type="text"
         v-model="title"
         @keyup.enter="add"
-        placeholder="请添加社会语录..."
+        HEAD
+        placeholder="添加新语录"
       />&nbsp;
+      <button @click="add">添加语录</button>
       <button @click="add">添加社会语录</button>
     </div>
     <ul>
@@ -38,6 +40,7 @@
 
 <script>
 import axios from "axios";
+// 函数要用大括号包含
 import { nanoid } from "nanoid";
 export default {
   name: "Message",
@@ -45,6 +48,13 @@ export default {
   data() {
     return {
       title: "",
+      messageArr: [
+        { id: "1", title: "希望", content: "我希望你为我而来" },
+        { id: "2", title: "心安", content: "最长久的心安莫过于和你共悲喜" },
+        { id: "3", title: "共苦", content: "酸涩皱眉与你共苦不算太差" },
+        { id: "4", title: "跌倒", content: "天在下雨地下滑，自己跌倒自己爬" },
+      ],
+
       messageArr: JSON.parse(localStorage.getItem("messageArr")) || [],
       //#region
       // messageArr: [
@@ -66,11 +76,26 @@ export default {
       //     content: "对你微笑，纯属礼貌，给脸不要，我看你无可救药。",
       //   },
       // ],
-      //#endregion
+      //#endregion    };
     };
   },
   methods: {
     add() {
+      axios.get("https://api.uixsj.cn/hitokoto/get?type=social").then(
+        (response) => {
+          console.log("添加成功");
+        },
+        (error) => {
+          alert(error.message);
+        }
+      );
+      //   const obj = {
+      //     id: nanoid(),
+      //     title: this.title,
+      //     content: response.data,
+      //   };
+      //   this.messageArr.unshift(obj);
+      //   this.name = "";
       // const obj = { id: nanoid(), title: this.title, content: "" };
       // this.messageArr.unshift(obj);
       // this.title = "";
@@ -108,9 +133,15 @@ export default {
 };
 </script>
 
-<style>
-hr {
+<style scoped>
+/*设置点击前的样式 */
+
+a:hover {
   color: red;
+}
+/*设置点击后的样式 */
+.router-link-active {
+  text-decoration: none;
 }
 .input {
   margin: 10px;
