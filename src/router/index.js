@@ -28,8 +28,19 @@ const router = new VueRouter({
                     path: 'message',
                     component: Message,
                     children: [{
-                        path: "detail",
-                        component: Detail
+                        // 给路由命名，命名后可以简化路径
+                        name: 'xiangqing',
+                        // path: "detail",
+                        path: "detail/:id/:title/:content",
+                        component: Detail,
+                        // props配置，让路由组件更方便的收到参数
+                        props($route) {
+                            return {
+                                id: $route.params.id,
+                                title: $route.params.title,
+                                content: $route.params.content
+                            }
+                        }
                     }]
                 }
             ]
