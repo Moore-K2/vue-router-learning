@@ -17,11 +17,27 @@
           <!-- <router-link :to="`/home/message/detail?id=${m.id}&title=${m.title}`">{{
           m.title
         }}</router-link> -->
-          <!-- 推荐写法，对象写法 -->
+          <!-- 推荐写法，对象query写法 -->
+          <!-- <router-link
+            :to="{
+              name: 'xiang',
+              query: {
+                id: m.id,
+                title: m.title,
+                content: m.content,
+              },
+            }"
+            >{{ m.title }}</router-link
+          > -->
+          <!-- 推荐写法，对象params写法,需要在index.js路由中给path配置参数 -->
+          <!-- <router-link
+            :to="`/home/message/detail/${m.id}/${m.title}/${m.content}`"
+            >{{ m.title }}</router-link
+          > -->
           <router-link
             :to="{
-              path: '/home/message/detail',
-              query: {
+              name: 'xiangqing',
+              params: {
                 id: m.id,
                 title: m.title,
                 content: m.content,
@@ -31,10 +47,13 @@
           >
           <!-- 获取id进行筛选 -->
           <button @click="del(m.id)">删除</button>
+          <button class="btn1">replace查看</button>
+          <button class="btn1" @click="pushShow">push查看</button>
         </li>
       </transition-group>
     </ul>
     <hr />
+    <!-- 展示区 -->
     <div class="display">
       <router-view></router-view>
     </div>
@@ -94,22 +113,31 @@ export default {
       //   this.messageArr.forEach((m) => {
       //     if (m.title === this.title) return alert("输入不能重复");
       //   })
-      console.log(this.messageArr[0].content);
-      axios.get("https://api.uixsj.cn/hitokoto/get?type=social").then(
-        (response) => {
-          console.log(response.data);
-          const obj = {
-            id: nanoid(),
-            title: this.title,
-            content: response.data,
-          };
-          this.messageArr.unshift(obj);
-          this.title = "";
-        },
-        (error) => {
-          alert(error.message);
+      // 定义flag，判断当前数组的标题是否有重复的，确保不重复。不能定义为const（read-only)
+      let flag = true;
+      this.messageArr.forEach((m) => {
+        if (m.title == this.title) {
+          flag = false;
+          alert("不能输入相同的语录标题！");
         }
-      );
+      });
+      if (flag) {
+        axios.get("https://api.uixsj.cn/hitokoto/get?type=social").then(
+          (response) => {
+            console.log(response.data);
+            const obj = {
+              id: nanoid(),
+              title: this.title,
+              content: response.data,
+            };
+            this.messageArr.unshift(obj);
+            this.title = "";
+          },
+          (error) => {
+            alert(error.message);
+          }
+        );
+      }
     },
     del(id) {
       console.log(id);
@@ -118,6 +146,10 @@ export default {
           return m.id !== id;
         });
       }
+    },
+    // 设置编程式路由
+    pushShow() {
+      console.log(this.$router);
     },
   },
   watch: {
@@ -130,7 +162,9 @@ export default {
       },
     },
   },
-  mounted() {},
+  mounted() {
+    console.log(this.$route);
+  },
 };
 </script>
 
@@ -162,6 +196,9 @@ li:hover button {
   color: red;
   display: block;
 }
+.btn1 {
+  width: 80px;
+}
 li button {
   font-size: 10px;
   line-height: 20px;
@@ -169,6 +206,7 @@ li button {
   height: 22px;
   float: right;
   margin-top: 2px;
+  margin-left: 15px;
   display: none;
 }
 /* 配置input聚焦 */
