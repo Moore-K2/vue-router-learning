@@ -6,30 +6,33 @@
         v-model="title"
         @keyup.enter="add"
         HEAD
-        placeholder="添加新语录"
+        placeholder="添加新语录..."
       />&nbsp;
       <button @click="add">添加语录</button>
-      <button @click="add">添加社会语录</button>
     </div>
     <ul>
-      <li v-for="m in messageArr" :key="m.id">
-        <!-- 字符串写法 加：表示将引号里面的解析为Js,再加模板字符串，目的是混着js变量 -->
-        <!-- <router-link :to="`/home/message/detail?id=${m.id}&title=${m.title}`">{{
+      <transition-group name="todo">
+        <li v-for="m in messageArr" :key="m.id">
+          <!-- 字符串写法 加：表示将引号里面的解析为Js,再加模板字符串，目的是混着js变量 -->
+          <!-- <router-link :to="`/home/message/detail?id=${m.id}&title=${m.title}`">{{
           m.title
         }}</router-link> -->
-        <!-- 推荐写法，对象写法 -->
-        <router-link
-          :to="{
-            path: '/home/message/detail',
-            query: {
-              id: m.id,
-              title: m.title,
-              content: m.content,
-            },
-          }"
-          >{{ m.title }}</router-link
-        >
-      </li>
+          <!-- 推荐写法，对象写法 -->
+          <router-link
+            :to="{
+              path: '/home/message/detail',
+              query: {
+                id: m.id,
+                title: m.title,
+                content: m.content,
+              },
+            }"
+            >{{ m.title }}</router-link
+          >
+          <!-- 获取id进行筛选 -->
+          <button @click="del(m.id)">删除</button>
+        </li>
+      </transition-group>
     </ul>
     <hr />
     <div class="display">
@@ -48,13 +51,6 @@ export default {
   data() {
     return {
       title: "",
-      messageArr: [
-        { id: "1", title: "希望", content: "我希望你为我而来" },
-        { id: "2", title: "心安", content: "最长久的心安莫过于和你共悲喜" },
-        { id: "3", title: "共苦", content: "酸涩皱眉与你共苦不算太差" },
-        { id: "4", title: "跌倒", content: "天在下雨地下滑，自己跌倒自己爬" },
-      ],
-
       messageArr: JSON.parse(localStorage.getItem("messageArr")) || [],
       //#region
       // messageArr: [
@@ -81,14 +77,7 @@ export default {
   },
   methods: {
     add() {
-      axios.get("https://api.uixsj.cn/hitokoto/get?type=social").then(
-        (response) => {
-          console.log("添加成功");
-        },
-        (error) => {
-          alert(error.message);
-        }
-      );
+      //#region
       //   const obj = {
       //     id: nanoid(),
       //     title: this.title,
@@ -99,24 +88,35 @@ export default {
       // const obj = { id: nanoid(), title: this.title, content: "" };
       // this.messageArr.unshift(obj);
       // this.title = "";
-      if (this.title.trim()) {
-        axios.get("https://api.uixsj.cn/hitokoto/get?type=social").then(
-          (response) => {
-            console.log(response.data);
-            const obj = {
-              id: nanoid(),
-              title: this.title,
-              content: response.data,
-            };
-            this.messageArr.unshift(obj);
-            this.title = "";
-          },
-          (error) => {
-            alert(error.message);
-          }
-        );
-      } else {
-        alert("输入的标题不能为空！");
+      //#endregion
+      if (!this.title.trim()) return alert("输入的标题不能为空！");
+      // if (
+      //   this.messageArr.forEach((m) => {
+      //     if (m.title === this.title) return alert("输入不能重复");
+      //   })
+
+      axios.get("https://api.uixsj.cn/hitokoto/get?type=social").then(
+        (response) => {
+          console.log(response.data);
+          const obj = {
+            id: nanoid(),
+            title: this.title,
+            content: response.data,
+          };
+          this.messageArr.unshift(obj);
+          this.title = "";
+        },
+        (error) => {
+          alert(error.message);
+        }
+      );
+    },
+    del(id) {
+      console.log(id);
+      if (confirm("Are you sure to delete?")) {
+        this.messageArr = this.messageArr.filter((m) => {
+          return m.id !== id;
+        });
       }
     },
   },
@@ -125,11 +125,12 @@ export default {
       deep: true,
       handler(value) {
         // value其实是messageArr数组的所有对象
-        console.log(value);
+        // console.log(value);
         localStorage.setItem("messageArr", JSON.stringify(value));
       },
     },
   },
+  mounted() {},
 };
 </script>
 
@@ -145,5 +146,48 @@ a:hover {
 }
 .input {
   margin: 10px;
+}
+li:hover {
+  background-color: #d4e5ee;
+}
+li {
+  /* list-style: none; */
+  padding: 0 5px;
+  height: 25px;
+  line-height: 25px;
+  border-bottom: 1px solid #ddd;
+  /* border: 1px solid rgba(0, 0, 0, 0.1); */
+}
+li:hover button {
+  color: red;
+  display: block;
+}
+li button {
+  font-size: 10px;
+  line-height: 20px;
+  width: 55px;
+  height: 22px;
+  float: right;
+  margin-top: 2px;
+  display: none;
+}
+/* 配置input聚焦 */
+.input input:focus {
+  outline: none;
+  border-color: rgba(82, 168, 236, 0.8);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075),
+    0 0 8px rgba(82, 168, 236, 0.6);
+}
+/* 配置动画 */
+.todo-enter-active {
+  animation: Moore, 1s linear;
+}
+@keyframes Moore {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0px);
+  }
 }
 </style>
