@@ -134,6 +134,7 @@ export default {
 </script>
 
 <style scoped>
+/* 我是v2版本留下的脚本痕迹 */
 /*设置点击前的样式 */
 
 a:hover {
