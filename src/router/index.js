@@ -34,6 +34,7 @@ const router = new VueRouter({
                         path: "detail/:id/:title/:content",
                         component: Detail,
                         // props配置，让路由组件更方便的收到参数
+                        //第三种写法：props值为函数，该函数返回的对象中每一组key-value都会通过props传给Detail组件
                         props($route) {
                             return {
                                 id: $route.params.id,

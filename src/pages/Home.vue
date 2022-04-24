@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>I am home</h2>
+    <h2 style="text-align: center">I am home</h2>
     <ul class="nav nav-tabs">
       <li>
         <router-link
@@ -20,7 +20,10 @@
       </li>
     </ul>
     <div class="dispaly">
-      <router-view></router-view>
+      <!-- keep-alive包裹的组件将缓存，不被销毁。include里面的是指《组件名》 -->
+      <keep-alive include="News">
+        <router-view></router-view>
+      </keep-alive>
     </div>
   </div>
 </template>
@@ -31,5 +34,5 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 </style>

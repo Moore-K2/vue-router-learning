@@ -5,7 +5,6 @@
         type="text"
         v-model="title"
         @keyup.enter="add"
-        HEAD
         placeholder="添加新语录..."
       />&nbsp;
       <button @click="add">添加语录</button>
@@ -47,8 +46,8 @@
           >
           <!-- 获取id进行筛选 -->
           <button @click="del(m.id)">删除</button>
-          <button class="btn1">replace查看</button>
-          <button class="btn1" @click="pushShow">push查看</button>
+          <button class="btn1" @click="replaceShow(m)">replace查看</button>
+          <button class="btn1" @click="pushShow(m)">push查看</button>
         </li>
       </transition-group>
     </ul>
@@ -144,8 +143,27 @@ export default {
       }
     },
     // 设置编程式路由
-    pushShow() {
-      console.log(this.$router);
+    pushShow(m) {
+      // console.log(this.$router);
+      this.$router.push({
+        name: "xiangqing",
+        params: {
+          id: m.id,
+          title: m.title,
+          content: m.content,
+        },
+      });
+    },
+    replaceShow(m) {
+      this.$router.replace({
+        name: "xiangqing",
+        params: {
+          id: m.id,
+
+          title: m.title,
+          content: m.content,
+        },
+      });
     },
   },
   watch: {
@@ -159,7 +177,7 @@ export default {
     },
   },
   mounted() {
-    console.log(this.$route);
+    // console.log(this.$route);
   },
 };
 </script>
