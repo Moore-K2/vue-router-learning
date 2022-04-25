@@ -10,5 +10,8 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+.page-header {
+  text-align: center;
+}
 </style>
