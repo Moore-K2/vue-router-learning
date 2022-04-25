@@ -108,6 +108,10 @@ export default {
       // this.title = "";
       //#endregion
       if (!this.title.trim()) return alert("输入的标题不能为空！");
+      // if (
+      //   this.messageArr.forEach((m) => {
+      //     if (m.title === this.title) return alert("输入不能重复");
+      //   })
       // 定义flag，判断当前数组的标题是否有重复的，确保不重复。不能定义为const（read-only)
       let flag = true;
       this.messageArr.forEach((m) => {
