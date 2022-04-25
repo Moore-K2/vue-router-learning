@@ -48,7 +48,7 @@ export default {
       if (this.opacity <= 0) {
         this.opacity = 1;
       }
-    }, 16);
+    }, 160);
   },
   deactivated() {
     console.log("news失活了");

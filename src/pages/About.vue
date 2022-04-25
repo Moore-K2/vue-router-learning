@@ -3,6 +3,13 @@
     <div>
       <h2 style="text-align: center">I am about</h2>
     </div>
+    <div class="button">
+      <el-row>
+        <el-button plain>朴素按钮</el-button>
+        <el-button type="primary" plain>主要按钮</el-button>
+        <el-button type="success" plain>成功按钮</el-button>
+      </el-row>
+    </div>
     <div id="leaves">
       <i></i>
       <i></i>
@@ -33,11 +40,16 @@ export default {
 body {
   background: #222;
 }
+/* 改element-ui的样式 */
+.el-row {
+  left: 58px;
+}
+
 /* leaf animations */
 
 #leaves {
-  /* position: relative; */
-  top: -50px;
+  position: relative;
+  top: 54px;
   width: 100%;
   text-align: right;
   /* text-align: center; */
