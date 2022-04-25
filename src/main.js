@@ -7,12 +7,17 @@ import App from './App.vue'
 import VueRouter from "vue-router"
 // 引入路由器
 import router from "./router/index.js"
+// 引入element-ui组件库
+import ElementUI from 'element-ui';
+// 引入element - ui的全部样式
+import 'element-ui/lib/theme-chalk/index.css';
 
 //关闭vue的生成提示
 Vue.config.productionTip = false
 
 // 应用后就有了router
 Vue.use(VueRouter)
+Vue.use(ElementUI)
 
 // 创建Vue的实例对象 vm
 new Vue({
