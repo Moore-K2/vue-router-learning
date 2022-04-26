@@ -6,7 +6,7 @@
     <div class="button">
       <el-row>
         <el-button plain>朴素按钮</el-button>
-        <el-button type="primary" plain>主要按钮</el-button>
+        <el-button type="primary" plain>树叶的“雪花”</el-button>
         <el-button type="success" plain>成功按钮</el-button>
       </el-row>
     </div>
@@ -33,6 +33,11 @@
 <script>
 export default {
   name: "About",
+  methods: {
+    display() {
+      document.getElementById("leaves").style.cssText = "display:block";
+    },
+  },
 };
 </script>
 
@@ -48,6 +53,7 @@ body {
 /* leaf animations */
 
 #leaves {
+  /* display: none; */
   position: relative;
   top: 54px;
   left: -81px;

@@ -92,4 +92,9 @@ export default {
   color: #fff;
   background-color: #bd362f;
 }
+/* 设置message和news的边框 */
+.nav-tabs > li > a {
+  border: 1px solid black;
+  background-color: antiquewhite;
+}
 </style>
