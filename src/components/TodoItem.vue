@@ -2,7 +2,11 @@
   <div class="myItem">
     <li>
       <label>
-        <input type="checkbox" :checked="todo.done" />&nbsp;
+        <input
+          type="checkbox"
+          :checked="todo.done"
+          @click="check(todo.id)"
+        />&nbsp;
         <span>{{ todo.title }}</span>
       </label>
       <button @click="del(todo.id)">删除</button>
@@ -17,10 +21,15 @@ export default {
   name: "TodoItem",
   props: ["todo"],
   methods: {
+    // 触发爷爷组件的事件
     del(id) {
       if (confirm("您确定删除吗？")) {
         this.$bus.$emit("deleteTodo", id);
       }
+    },
+    // 触发爷爷组件的事件
+    check(id) {
+      this.$bus.$emit("checkTodo", id);
     },
   },
 };
@@ -54,7 +63,7 @@ li label li input {
 
 li button {
   float: right;
-  /* display: none; */
+  display: none;
   /* margin-top: 3px; */
   margin: 5px;
   width: 47px;
@@ -70,6 +79,9 @@ li:hover button {
   display: block;
   color: red;
   background-color: antiquewhite;
+}
+li button:hover {
+  color: blue;
 }
 /* ?? */
 li:before {

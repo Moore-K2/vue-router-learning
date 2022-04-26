@@ -17,11 +17,7 @@ export default {
   name: "TodoList",
   data() {
     return {
-      todolist: [
-        { id: "001", title: "学习", done: false },
-        { id: "002", title: "打豆豆", done: false },
-        { id: "003", title: "打游戏", done: false },
-      ],
+      todolist: JSON.parse(localStorage.getItem("todolist")) || [],
     };
   },
   //方法
@@ -34,6 +30,14 @@ export default {
         return todo.id !== id;
       });
     },
+    check(id) {
+      // 遍历todolist的todo,若id===todo的id, 将done = !done
+      this.todolist.forEach((todo) => {
+        if (todo.id === id) {
+          todo.done = !todo.done;
+        }
+      });
+    },
   },
   //注册组件
   components: {
@@ -42,7 +46,20 @@ export default {
     TodoFooter,
   },
   mounted() {
+    // 绑定全局总线事件 for item
     this.$bus.$on("deleteTodo", this.delete);
+    // 绑定全局总线事件-for item
+    this.$bus.$on("checkTodo", this.check);
+  },
+  watch: {
+    todolist: {
+      deep: true,
+      // value其实是todo对象
+      handler(value) {
+        // console.log("监视到了", value);
+        localStorage.setItem("todolist", JSON.stringify(value));
+      },
+    },
   },
 };
 </script>
