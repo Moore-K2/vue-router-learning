@@ -4,7 +4,8 @@
     <label for="">
       <input type="checkbox" />
     </label>
-    <span>已完成？？</span>/全部？？
+    <span>{{ doneTodo }}</span
+    >/全部{{ allTodo }}
     <button class="btn btn-danger">清除已完成任务</button>
   </div>
 </template>
@@ -13,9 +14,19 @@
 export default {
   name: "TodoFooter",
   data() {
-    return {
-      todolist: [],
-    };
+    return {};
+  },
+  props: ["todolist"],
+  computed: {
+    allTodo() {
+      return this.todolist.length;
+    },
+    doneTodo() {
+      const arr = this.todolist.filter((todo) => {
+        return todo.done;
+      });
+      return arr.length;
+    },
   },
 };
 </script>
@@ -43,5 +54,4 @@ export default {
   float: right;
   margin-top: 5px;
 }
-
 </style>

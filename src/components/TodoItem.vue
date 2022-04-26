@@ -2,10 +2,12 @@
   <div class="myItem">
     <li>
       <label>
-        <input type="checkbox" />&nbsp;
+        <input type="checkbox" :checked="todo.done" />&nbsp;
         <span>{{ todo.title }}</span>
       </label>
       <button @click="del(todo.id)">删除</button>
+      <button @click="del(todo.id)">编辑</button>
+      <!-- <el-button type="primary">编辑</el-button> -->
     </li>
   </div>
 </template>
@@ -16,8 +18,9 @@ export default {
   props: ["todo"],
   methods: {
     del(id) {
-      console.log("触发删除！");
-      this.$bus.$emit("deleteTodo", id);
+      if (confirm("您确定删除吗？")) {
+        this.$bus.$emit("deleteTodo", id);
+      }
     },
   },
 };
