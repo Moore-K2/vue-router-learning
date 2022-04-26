@@ -7,6 +7,8 @@ import App from './App.vue'
 import VueRouter from "vue-router"
 // 引入路由器
 import router from "./router/index.js"
+
+//全部引入
 // 引入element-ui组件库
 import ElementUI from 'element-ui';
 // 引入element - ui的全部样式
@@ -23,6 +25,11 @@ Vue.use(ElementUI)
 new Vue({
     //将App组件放入容器中
     render: h => h(App),
-    router: router
+    router: router,
+
+    // 安装全局事件总线--适用于任意组件间通信
+    beforeCreate() {
+        Vue.prototype.$bus = this // $bus就是当前应用的vm
+    }
 
 }).$mount('#app')

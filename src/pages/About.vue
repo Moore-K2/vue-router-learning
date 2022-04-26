@@ -50,6 +50,7 @@ body {
 #leaves {
   position: relative;
   top: 54px;
+  left: -81px;
   width: 100%;
   text-align: right;
   /* text-align: center; */

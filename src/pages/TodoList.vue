@@ -29,12 +29,20 @@ export default {
     add(todo) {
       this.todolist.unshift(todo);
     },
+    delete(id) {
+      this.todolist = this.todolist.filter((todo) => {
+        return todo.id !== id;
+      });
+    },
   },
   //注册组件
   components: {
     TodoHeader,
     TodoArr,
     TodoFooter,
+  },
+  mounted() {
+    this.$bus.$on("deleteTodo", this.delete);
   },
 };
 </script>

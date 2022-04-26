@@ -88,11 +88,11 @@ const router = new VueRouter({
 
 // 全局前置路由守卫--每次路由切换之前调用（初始化时调用）
 router.beforeEach((to, from, next) => {
-    console.log("去", to, "来自", from)
-        //     // 设置路由title
-        // document.title = to.meta.title || "摩尔庄园"
-        // 放行
-        // if (to.path === "/home/news" || to.path === "/home/message") {
+    // console.log("去", to, "来自", from)
+    //     // 设置路由title
+    // document.title = to.meta.title || "摩尔庄园"
+    // 放行
+    // if (to.path === "/home/news" || to.path === "/home/message") {
 
     // 判断设置了权限的
     if (to.meta.isAuth) {

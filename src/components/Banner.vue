@@ -9,7 +9,7 @@
 </template>
  
 <script>
-export defau {
+export default {
   name: "Banner",
   methods: {
     back() {
